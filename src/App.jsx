@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router'
 import Login from './pages/Login.jsx'
 import Dashboard from './pages/admin/Dashboard.jsx'
 import Ofertas from './pages/admin/Ofertas.jsx'
+import Midias from './pages/admin/Midias.jsx'
 import Configuracoes from './pages/admin/Configuracoes.jsx'
 import TV from './pages/TV.jsx'
 import ProtectedRoute from './routes/ProtectedRoute.jsx'
@@ -25,6 +26,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <Ofertas />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/midias"
+        element={
+          <ProtectedRoute>
+            <Midias />
           </ProtectedRoute>
         }
       />

@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router'
-import { LayoutDashboard, ListOrdered, LogOut, Menu, Settings, Tv, X } from 'lucide-react'
+import { Image, LayoutDashboard, ListOrdered, LogOut, Menu, Settings, Tv, X } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext.jsx'
 
 const LINKS = [
   { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/admin/ofertas', label: 'Ofertas', icon: ListOrdered },
+  { to: '/admin/midias', label: 'Fotos e vídeos', icon: Image },
   { to: '/admin/configuracoes', label: 'Configurações', icon: Settings },
 ]
 

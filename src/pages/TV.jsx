@@ -3,18 +3,30 @@ import { Maximize, Minimize } from 'lucide-react'
 import TVCarousel from '../components/tv/TVCarousel.jsx'
 import ConnectionIndicator from '../components/tv/ConnectionIndicator.jsx'
 import { useOfertas } from '../hooks/useOfertas'
+import { useMidias } from '../hooks/useMidias'
 import { useConfiguracoes } from '../hooks/useConfiguracoes'
 import { isOfertaVisivelAgora } from '../utils/ofertaStatus'
 
 export default function TV() {
   const { ofertas, online } = useOfertas({ somenteAtivas: true })
+  const { midias } = useMidias({ somenteAtivas: true })
   const { config } = useConfiguracoes()
   const [emTelaCheia, setEmTelaCheia] = useState(false)
 
-  const ofertasVisiveis = useMemo(
-    () => ofertas.filter(isOfertaVisivelAgora).sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0)),
-    [ofertas],
-  )
+  // Ofertas dentro do período de validade, seguidas das fotos/vídeos institucionais -
+  // tudo entra na mesma rotação da TV, cada tipo respeitando sua própria ordem.
+  const itensCarrossel = useMemo(() => {
+    const ofertasItems = ofertas
+      .filter(isOfertaVisivelAgora)
+      .sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0))
+      .map((oferta) => ({ kind: 'oferta', data: oferta }))
+
+    const midiasItems = [...midias]
+      .sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0))
+      .map((midia) => ({ kind: midia.tipo, data: midia }))
+
+    return [...ofertasItems, ...midiasItems]
+  }, [ofertas, midias])
 
   async function alternarTelaCheia() {
     try {
@@ -33,7 +45,6 @@ export default function TV() {
 
   return (
     <div className="fixed inset-0 overflow-hidden select-none bg-bakery-cream">
-      {/* Cabeçalho com nome e logo da padaria */}
       <header className="absolute top-0 left-0 z-20 flex items-center gap-3 px-8 py-6">
         {config.logo_url && (
           <img src={config.logo_url} alt={config.nome_padaria} className="h-14 w-14 rounded-full object-cover shadow" />
@@ -53,10 +64,9 @@ export default function TV() {
 
       <ConnectionIndicator online={online} />
 
-      {/* Conteúdo principal: carrossel de ofertas */}
-      {ofertasVisiveis.length > 0 ? (
+      {itensCarrossel.length > 0 ? (
         <TVCarousel
-          ofertas={ofertasVisiveis}
+          itens={itensCarrossel}
           tempoExibicao={config.tempo_exibicao}
           modoTransicao={config.modo_transicao}
           exibirPrecoAntigo={config.exibir_preco_antigo}
@@ -69,12 +79,11 @@ export default function TV() {
             Nenhuma oferta ativa no momento
           </p>
           <p className="text-xl text-bakery-brown-500">
-            Cadastre uma oferta no painel administrativo para exibi-la aqui.
+            Cadastre uma oferta, foto ou vídeo no painel administrativo para exibir aqui.
           </p>
         </div>
       )}
 
-      {/* Rodapé */}
       {config.mensagem_rodape && (
         <footer className="absolute bottom-0 left-0 right-0 z-20 bg-bakery-brown-900/90 text-bakery-cream text-center text-lg lg:text-xl font-medium py-3 px-6">
           {config.mensagem_rodape}
