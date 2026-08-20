@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@theme {
+  /* Paleta da padaria: tons de pão, trigo e forno quente */
+  --color-bakery-cream: #fbf3e6;
+  --color-bakery-cream-dark: #f2e4cc;
+  --color-bakery-brown-50: #f7ede4;
+  --color-bakery-brown-100: #ecd6bf;
+  --color-bakery-brown-300: #c99562;
+  --color-bakery-brown-500: #8a4f26;
+  --color-bakery-brown-700: #5c3018;
+  --color-bakery-brown-900: #3a1e0f;
+  --color-bakery-gold: #e0a52e;
+  --color-bakery-gold-dark: #b9821c;
+  --color-bakery-promo: #d84315;
+  --color-bakery-promo-dark: #ad3410;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-bakery-cream);
+    color: var(--color-bakery-brown-900);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--color-bakery-brown-300);
+    border-radius: 9999px;
+  }
+}
+
+/* Transições do carrossel da TV - animação de entrada tocada ao remontar o slide (troca de "key") */
+@keyframes tv-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.tv-anim-fade {
+  animation: tv-fade-in 700ms ease-in-out;
+}
+
+@keyframes tv-slide-in {
+  from {
+    transform: translateX(4%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.tv-anim-slide {
+  animation: tv-slide-in 650ms ease-in-out;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.toast-item {
+  animation: toast-in 200ms ease-out;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.animate-pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
